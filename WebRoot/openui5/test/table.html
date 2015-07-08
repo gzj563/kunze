@@ -6,7 +6,7 @@
     <script id="sap-ui-bootstrap"
             src="http://localhost:8080/openui5/resources/sap-ui-core.js"
             data-sap-ui-theme="sap_bluecrystal"
-            data-sap-ui-libs="sap.ui.common,sap.ui.table"></script>
+            data-sap-ui-libs="sap.ui.commons,sap.m"></script>
 
 
 </head>
@@ -14,15 +14,16 @@
 <div id="space"></div>
 
 <script>
+    jQuery.sap.require("sap.ui.table.Table");
     var dataForPractice = [{
         name:"123",
-        dateTime:""
+        createTime:""
     },{
         testP:{
             testp_p1:"777"
         },
         name:"456",
-        dateTime:"12-2-4"
+        createTime:"12-2-4"
     }];
 
     var table = new sap.ui.table.Table({
@@ -34,8 +35,15 @@
                 label:new sap.m.Label({
                     text: "Name"
                 }),
-                template: new sap.m.Text().bindProperty("text", "name",function(value,obj){
-                    console.log(value);
+                template: new sap.m.Text().bindProperty("text", {
+                    path:"name",
+                    formatter:function(value){
+                        if(value){
+                            console.log('debug');
+                        }
+                        return value;
+                    }
+
                 }),
                 sortProperty: "name"
             }),
@@ -43,14 +51,46 @@
                 label: new sap.m.Label({
                     text: "Created Time"
                 }),
-                template: new sap.m.Text().bindProperty("text", "createTime", function (sValue) {
-                    return sValue == null ? null : sValue.replace("T", " ").substr(0, 19);
+                template: new sap.ui.commons.TextField({
+                    change:function(e){
+                        console.log("change event")
+                    }
+                }).bindProperty("value", {
+                    parts:[
+                        {
+                            path:"testP/testp_p1"
+                        },{
+                            path:"createTime"
+                        }
+                    ],
+                    formatter:function(value,value2){
+                        if(value && value2){
+                            if(value2.length < value.length){
+                                return value2;
+                            }
+                        }
+                        return value;
+                    }
+
                 }),
                 sortProperty: "createTime"
             })
+        ],
+        toolbar:[
+                new sap.m.Button({
+                    text:"getData",
+                    press:function(){
+                        var data = table.getModel().getData();
+                        console.log("123")
+                    }
+                })
         ]
 
     });
+    var model = new sap.ui.model.json.JSONModel();
+    model.setData(dataForPractice)
+    table.setModel(model);
+    table.bindRows("/");
 
     table.placeAt("space");
 </script>
