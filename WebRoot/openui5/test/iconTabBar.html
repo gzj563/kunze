@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script id="sap-ui-bootstrap"
+            src="http://localhost:8080/openui5/resources/sap-ui-core.js"
+            data-sap-ui-theme="sap_bluecrystal"
+            data-sap-ui-libs="sap.ui.commons,sap.m"></script>
+
+
+</head>
+<body>
+<div id="space"></div>
+
+<script>
+
+    var oIconTabBarInfo = new sap.m.IconTabBar({
+        id: "ITabBar2",
+        firstTabClosable: true,
+        showOverflowPopOver: false
+    });
+
+    var oIconTabName = new sap.m.IconTabFilter("ITabName2", {design: "Horizontal", icon: "sap-icon://my-view", iconColor: "Neutral", text: "name tab", closable: true });
+    oIconTabName.addContent(new sap.m.Text("tin2", {text: "name content info"}));
+    oIconTabBarInfo.addItem(oIconTabName);
+
+    var oIconTabAddress = new sap.m.IconTabFilter("ITabAddress2", {design: "Horizontal", icon: "sap-icon://home", text: "address tab", closable: true });
+    oIconTabAddress.addContent(new sap.m.Text("tia2", {text: "content info"}));
+    oIconTabBarInfo.addItem(oIconTabAddress);
+
+    oIconTabBarInfo.placeAt("space");
+    /*
+    var btn = new sap.ui.commons.Button({
+        text:'Hello World',
+        press:function(){alert('Hello!')}
+    });
+    btn.placeAt('space');
+    */
+</script>
+</body>
+</html>
