@@ -6,7 +6,7 @@
     <script id="sap-ui-bootstrap"
             src="http://localhost:8080/openui5/resources/sap-ui-core.js"
             data-sap-ui-theme="sap_bluecrystal"
-            data-sap-ui-libs="sap.ui.commons,sap.m"></script>
+            data-sap-ui-libs="sap.ui.common,sap.ui.table"></script>
 
 
 </head>
@@ -14,29 +14,47 @@
 <div id="space"></div>
 
 <script>
+    var dataForPractice = [{
+        name:"123",
+        dateTime:""
+    },{
+        testP:{
+            testp_p1:"777"
+        },
+        name:"456",
+        dateTime:"12-2-4"
+    }];
 
-    var oIconTabBarInfo = new sap.m.IconTabBar({
-        id: "ITabBar2",
-        firstTabClosable: true,
-        showOverflowPopOver: false
+    var table = new sap.ui.table.Table({
+        visibleRowCount: 8,
+        selectionMode: sap.ui.table.SelectionMode.Single,
+        selectionBehavior: sap.ui.table.SelectionBehavior.RowOnly,
+        columns: [
+            new sap.ui.table.Column({
+                label:new sap.m.Label({
+                    text: "Name"
+                }),
+                template: new sap.m.Text().bindProperty("text", "name",function(value,obj){
+                    console.log(value);
+                }),
+                sortProperty: "name"
+            }),
+            new sap.ui.table.Column({
+                label: new sap.m.Label({
+                    text: "Created Time"
+                }),
+                template: new sap.m.Text().bindProperty("text", "createTime", function (sValue) {
+                    return sValue == null ? null : sValue.replace("T", " ").substr(0, 19);
+                }),
+                sortProperty: "createTime"
+            })
+        ]
+
     });
 
-    var oIconTabName = new sap.m.IconTabFilter("ITabName2", {design: "Horizontal", icon: "sap-icon://my-view", iconColor: "Neutral", text: "name tab", closable: true });
-    oIconTabName.addContent(new sap.m.Text("tin2", {text: "name content info"}));
-    oIconTabBarInfo.addItem(oIconTabName);
-
-    var oIconTabAddress = new sap.m.IconTabFilter("ITabAddress2", {design: "Horizontal", icon: "sap-icon://home", text: "address tab", closable: true });
-    oIconTabAddress.addContent(new sap.m.Text("tia2", {text: "content info"}));
-    oIconTabBarInfo.addItem(oIconTabAddress);
-
-    oIconTabBarInfo.placeAt("space");
-    /*
-     var btn = new sap.ui.commons.Button({
-     text:'Hello World',
-     press:function(){alert('Hello!')}
-     });
-     btn.placeAt('space');
-     */
+    table.placeAt("space");
 </script>
+
+
 </body>
 </html>
